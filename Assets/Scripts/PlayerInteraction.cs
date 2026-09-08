@@ -6,16 +6,24 @@ public class PlayerInteraction : MonoBehaviour
     // 상호작용 설정 (Inspector에서 조정)
     [SerializeField] private InputActionAsset actions;
     [SerializeField] private Transform cameraTransform;
+    [SerializeField] private Transform holdPoint;             // 손 위치
     [SerializeField] private float interactDistance = 2.5f;   // 손이 닿는 거리 (미터)
 
+    // 입력 액션
+    private InputAction interactAction;   // E: 시설 사용
+    private InputAction useAction;        // 좌클릭: 물건 다루기
+    private InputAction dropAction;       // G: 내려놓기
+
     // 내부 상태
-    private InputAction interactAction;
-    private IInteractable current;   // 지금 바라보고 있는 상호작용 대상, 없으면 null
+    private IInteractable current;   // 지금 바라보고 있는 시설, 없으면 null
+    private IPickable held;          // 지금 들고 있는 물건, 없으면 null
 
     // 생성 직후 한 번, 참조 준비
     void Awake()
     {
         interactAction = actions.FindAction("Interact");
+        useAction = actions.FindAction("Use");
+        dropAction = actions.FindAction("Drop");
     }
 
     // 켜질 때, 입력 활성화
@@ -32,20 +40,36 @@ public class PlayerInteraction : MonoBehaviour
 
     void Update()
     {
-        // 1. 카메라 정면으로 레이를 쏴서 바라보는 물체 찾기
+        // 카메라 정면으로 레이를 쏴서 바라보는 물체 찾기
+        GameObject hitObject = null;
         if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out RaycastHit hit, interactDistance))
         {
-            current = hit.collider.GetComponent<IInteractable>();
+            hitObject = hit.collider.gameObject;
         }
-        else
-        {
-            current = null;
-        }
+        current = hitObject != null ? hitObject.GetComponent<IInteractable>() : null;
 
-        // 2. 상호작용 대상이 있고 E를 눌렀으면 실행
+        // E: 시설이 있으면 사용
         if (current != null && interactAction.WasPressedThisFrame())
         {
             current.Interact();
+        }
+
+        // 좌클릭: 손이 비어 있고 바라보는 물체가 집을 수 있으면 집기
+        if (held == null && useAction.WasPressedThisFrame() && hitObject != null)
+        {
+            IPickable pickable = hitObject.GetComponent<IPickable>();
+            if (pickable != null)
+            {
+                held = pickable;
+                held.OnPickedUp(holdPoint);
+            }
+        }
+
+        // G: 들고 있으면 놓기
+        if (held != null && dropAction.WasPressedThisFrame())
+        {
+            held.OnDropped();
+            held = null;
         }
     }
 }
