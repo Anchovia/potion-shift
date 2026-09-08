@@ -555,6 +555,7 @@ GameObject:
   - component: {fileID: 1103099701}
   - component: {fileID: 1103099700}
   - component: {fileID: 1103099702}
+  - component: {fileID: 1103099703}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -620,6 +621,21 @@ MonoBehaviour:
   jumpHeight: 1.2
   gravity: -9.81
   actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+--- !u!114 &1103099703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103099699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8666061f4ec4af541bab80599b566aa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerLook
+  actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  cameraTransform: {fileID: 330585546}
+  sensitivity: 0.1
 --- !u!1 &1620480100
 GameObject:
   m_ObjectHideFlags: 0
