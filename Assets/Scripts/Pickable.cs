@@ -23,4 +23,9 @@ public class Pickable : MonoBehaviour, IPickable
         transform.SetParent(null);             // 부모 해제, 월드로 복귀
         rb.isKinematic = false;                // 물리 재개 (떨어짐)
     }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
 }

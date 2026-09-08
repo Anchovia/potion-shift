@@ -54,14 +54,25 @@ public class PlayerInteraction : MonoBehaviour
             current.Interact();
         }
 
-        // 좌클릭: 손이 비어 있고 바라보는 물체가 집을 수 있으면 집기
-        if (held == null && useAction.WasPressedThisFrame() && hitObject != null)
+        // 좌클릭: 빈손이면 집기, 들고 있으면 바라보는 기구에 넣기
+        if (useAction.WasPressedThisFrame() && hitObject != null)
         {
-            IPickable pickable = hitObject.GetComponent<IPickable>();
-            if (pickable != null)
+            if (held == null)
             {
-                held = pickable;
-                held.OnPickedUp(holdPoint);
+                IPickable pickable = hitObject.GetComponent<IPickable>();
+                if (pickable != null)
+                {
+                    held = pickable;
+                    held.OnPickedUp(holdPoint);
+                }
+            }
+            else
+            {
+                IReceiver receiver = hitObject.GetComponent<IReceiver>();
+                if (receiver != null && receiver.TryReceive(held.GetGameObject()))
+                {
+                    held = null;   // 기구가 받았으면 손 비우기
+                }
             }
         }
 
