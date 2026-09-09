@@ -603,6 +603,7 @@ GameObject:
   - component: {fileID: 1073262478}
   - component: {fileID: 1073262483}
   - component: {fileID: 1073262484}
+  - component: {fileID: 1073262485}
   m_Layer: 0
   m_Name: Herb
   m_TagString: Untagged
@@ -742,6 +743,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bd1d91b5888df04e92ac1861e126aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickable
+--- !u!114 &1073262485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073262477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de11361d35864e14d9a9599525afc12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HerbItem
+  data: {fileID: 11400000, guid: a08be815bcbf9d94bb9848472520db34, type: 2}
 --- !u!1 &1103099699
 GameObject:
   m_ObjectHideFlags: 0

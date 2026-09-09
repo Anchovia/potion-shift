@@ -6,9 +6,12 @@ public class Mortar : MonoBehaviour, IReceiver
 
     public bool TryReceive(GameObject item)
     {
+        HerbItem herb = item.GetComponent<HerbItem>();
+        if (herb == null) return false;   // 약초가 아니면 거부
+
         herbCount++;
-        Destroy(item);   // 지금은 오브젝트를 없애는 것으로 "들어갔다"를 표현
-        Debug.Log($"절구에 약재 투입. 현재 {herbCount}개");
+        Debug.Log($"절구에 {herb.data.displayName} 투입. 현재 {herbCount}개");
+        Destroy(item);
         return true;
     }
 }
