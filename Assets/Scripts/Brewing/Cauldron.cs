@@ -7,6 +7,7 @@ public class Cauldron : MonoBehaviour, IReceiver, IInteractable
 {
     // 장비 사양 (Inspector에서 조정)
     [SerializeField] private ElementDatabase elementDatabase;
+    [SerializeField] private CauldronPanel panel;
     [SerializeField] private int capacity = 64;             // 최대 투입 단위 (6-1 일괄 제조)
     [SerializeField] private float secondsPerUnit = 4f;     // 단위당 제작 초 (6-1)
 
@@ -64,12 +65,12 @@ public class Cauldron : MonoBehaviour, IReceiver, IInteractable
         return "E · 가마솥";
     }
 
-    // 임시: 패널 UI가 생기기 전까지 E를 누르면 현재 온도로 바로 가동
+    // E: Idle이면 패널 열기, Done이면 결과 표시
     public void Interact()
     {
         if (state == CauldronState.Idle)
         {
-            TryStartBrew(selectedTemperature);
+            panel.Open(this);
         }
         else if (state == CauldronState.Done)
         {
@@ -170,7 +171,7 @@ public class Cauldron : MonoBehaviour, IReceiver, IInteractable
         return Element.Fire;
     }
 
-    private string ContentsText()
+    public string ContentsText()
     {
         if (contents.Count == 0) return "비어 있음";
         List<string> parts = new List<string>();
@@ -179,6 +180,11 @@ public class Cauldron : MonoBehaviour, IReceiver, IInteractable
             parts.Add($"{pair.Key} {pair.Value}");
         }
         return string.Join(" · ", parts);
+    }
+
+    public float EstimatedSeconds()
+    {
+        return TotalUnits() * secondsPerUnit;
     }
 
     private string DescribeResult()
